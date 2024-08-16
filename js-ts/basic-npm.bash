@@ -23,12 +23,7 @@ dev_dependencies=(
 dependencies=(
     # add more regular dependencies here
 )
-
-# Check if project name is provided
-if [ -z "$1" ]; then
-    echo "Please provide a project name."
-    exit 1
-fi
+# Check if project name is provided if [ -z "$1" ]; then echo "Please provide a project name." exit 1 fi
 
 # Create project folder and navigate into it
 project_name=$1
@@ -72,7 +67,8 @@ cp /home/martin/Dev/presets/js-ts/eslint/config.json ./.eslintrc
 cp /home/martin/Dev/presets/js-ts/prettier/config.json ./.prettierrc
 
 # Remove comments from tsconfig.json
-sed '/\/\//d' tsconfig.json > tsconfig.tmp.json
+
+sed  -E '/^[ \t]*\//d; /^[[:space:]]*$/d; s/\/\*(.*?)\*\///g; s/[[:blank:]]+$//' tsconfig.json > tsconfig.tmp.json
 
 # Add alias path to tsconfig.json
 jq 'if .compilerOptions == null then .compilerOptions = {} else . end | .compilerOptions.baseUrl = "." | if .compilerOptions.paths == null then .compilerOptions.paths = {} else . end | .compilerOptions.paths["@src/*"] = ["src/*"]' tsconfig.tmp.json > tsconfig.json
