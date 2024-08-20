@@ -1,0 +1,17 @@
+{
+  "author": "martin76ec",
+  "name": "project-name",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "pkg-name": "dist/app/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsx src/app/cli.ts",
+    "build": "tsc && tsc-alias"
+  },
+  "description": "",
+  "module": "src/index.ts"
+}
