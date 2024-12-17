@@ -17,11 +17,16 @@ dev_dependencies=(
     "eslint-plugin-unused-imports@3.0.0"
     "prettier@3.0.3"
     "tsc-alias@^1.8.10"
+    "tailwindcss@latest"
+    "postcss@latest"
+    "autoprefixer@latest"
 )
 
 dependencies=(
     # add more regular dependencies here
 )
+
+# The rest of your script continues here...
 
 # Check if project name is provided
 if [ -z "$1" ]; then
@@ -40,6 +45,15 @@ bun init -y
 # Initialize git
 git init
 
+# Install Vite and necessary plugins
+bun add vite
+
+# Install Tailwind CSS with PostCSS and Autoprefixer
+bun add -d tailwindcss postcss autoprefixer
+
+# Initialize Tailwind CSS configuration
+npx tailwindcss init -p
+
 # Install dependencies
 for dep in "${dependencies[@]}"; do
     bun add $dep
@@ -53,6 +67,18 @@ done
 # Create src folder and index.ts file inside it
 mkdir src
 echo "console.log('Hello, $project_name!');" > src/index.ts
+
+# Create a basic Vite configuration file
+echo "import { defineConfig } from 'vite'; 
+import path from 'path';
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      '@src': path.resolve(__dirname, 'src')
+    }
+  }
+});" > vite.config.ts
 
 # Update package.json to use src/index.ts as the module entry point
 jq '.module = "src/index.ts"' package.json > tmp.$$.json && mv tmp.$$.json package.json
@@ -78,4 +104,24 @@ jq 'if .compilerOptions == null then .compilerOptions = {} else . end
 # Clean up temporary file
 rm tsconfig.tmp.json
 
-echo "Project $project_name has been set up successfully."
+# Create Tailwind CSS entry file
+echo "@tailwind base;
+@tailwind components;
+@tailwind utilities;" > src/index.css
+
+# Update Vite configuration to include Tailwind CSS
+echo "import { defineConfig } from 'vite'; 
+import path from 'path';
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      '@src': path.resolve(__dirname, 'src')
+    }
+  },
+  css: {
+    postcss: './postcss.config.js'
+  }
+});" > vite.config.ts
+
+echo "Project $project_name has been set up successfully with Vite, TypeScript, Tailwind CSS, and ESLint."

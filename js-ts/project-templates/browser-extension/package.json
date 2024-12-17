@@ -1,0 +1,9 @@
+{
+  "name": "webpack-browser-extension-template",
+  "module": "bundler.ts",
+  "scripts": {
+    "build": "bun bundler.ts",
+    "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,md}' '!build/**' '!node_modules/**'"
+  },
+  "type": "module"
+}

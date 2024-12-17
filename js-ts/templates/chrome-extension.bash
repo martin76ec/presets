@@ -17,6 +17,8 @@ dev_dependencies=(
     "eslint-plugin-unused-imports@3.0.0"
     "prettier@3.0.3"
     "tsc-alias@^1.8.10"
+    "@types/chrome": "^0.0.246",
+    "bun-types": "latest"
 )
 
 dependencies=(
@@ -37,6 +39,9 @@ cd $project_name
 # Initialize bun with the project name
 bun init -y
 
+# Copy base project
+cp -r /home/martin/Dev/presets/js-ts/project-templates/browser-extension/* .
+
 # Initialize git
 git init
 
@@ -49,10 +54,6 @@ done
 for dev_dep in "${dev_dependencies[@]}"; do
     bun add -d $dev_dep
 done
-
-# Create src folder and index.ts file inside it
-mkdir src
-echo "console.log('Hello, $project_name!');" > src/index.ts
 
 # Update package.json to use src/index.ts as the module entry point
 jq '.module = "src/index.ts"' package.json > tmp.$$.json && mv tmp.$$.json package.json
