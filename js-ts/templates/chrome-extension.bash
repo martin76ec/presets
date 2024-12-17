@@ -48,7 +48,7 @@ for dep in "${dependencies[@]}"; do
     bun add $dep
 done
 
-Install dev dependencies
+# Install dev dependencies
 for dev_dep in "${dev_dependencies[@]}"; do
     bun add -d $dev_dep
 done
