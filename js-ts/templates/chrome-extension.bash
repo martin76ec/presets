@@ -17,8 +17,6 @@ dev_dependencies=(
     "eslint-plugin-unused-imports@3.0.0"
     "prettier@3.0.3"
     "tsc-alias@^1.8.10"
-    "@types/chrome": "^0.0.246",
-    "bun-types": "latest"
 )
 
 dependencies=(
@@ -50,7 +48,7 @@ for dep in "${dependencies[@]}"; do
     bun add $dep
 done
 
-# Install dev dependencies
+Install dev dependencies
 for dev_dep in "${dev_dependencies[@]}"; do
     bun add -d $dev_dep
 done
@@ -65,16 +63,14 @@ rm -f index.ts
 cp /home/martin/Dev/presets/js-ts/eslint/config.json ./.eslintrc
 cp /home/martin/Dev/presets/js-ts/prettier/config.json ./.prettierrc
 
+
 # Remove comments from tsconfig.json
 sed  -E '/^[ \t]*\//d; /^[[:space:]]*$/d; s/\/\*(.*?)\*\///g; s/[[:blank:]]+$//' tsconfig.json > tsconfig.tmp.json
 
 # Add alias path to tsconfig.json
-jq 'if .compilerOptions == null then .compilerOptions = {} else . end 
-    | .compilerOptions.baseUrl = "." 
-    | if .compilerOptions.paths == null then .compilerOptions.paths = {} else . end 
-    | .compilerOptions.paths["@src/*"] = ["src/*"] 
-    | .include = ["src/**/*", "*.json"] 
-    | .exclude = ["node_modules"]' tsconfig.tmp.json > tsconfig.json
+jq 'if .compilerOptions == null then .compilerOptions = {} else . end | .compilerOptions.baseUrl = "." | if .compilerOptions.paths == null then .compilerOptions.paths = {} else . end | .compilerOptions.paths["@src/*"] = ["src/*"] | .include = ["src/**/*", "*.json"] | .exclude = ["node_modules"]' tsconfig.tmp.json > tsconfig.json
+
+echo "----------------#############################################"
 
 # Clean up temporary file
 rm tsconfig.tmp.json
