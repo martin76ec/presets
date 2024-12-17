@@ -70,8 +70,6 @@ sed  -E '/^[ \t]*\//d; /^[[:space:]]*$/d; s/\/\*(.*?)\*\///g; s/[[:blank:]]+$//'
 # Add alias path to tsconfig.json
 jq 'if .compilerOptions == null then .compilerOptions = {} else . end | .compilerOptions.baseUrl = "." | if .compilerOptions.paths == null then .compilerOptions.paths = {} else . end | .compilerOptions.paths["@src/*"] = ["src/*"] | .include = ["src/**/*", "*.json"] | .exclude = ["node_modules"]' tsconfig.tmp.json > tsconfig.json
 
-echo "----------------#############################################"
-
 # Clean up temporary file
 rm tsconfig.tmp.json
 
