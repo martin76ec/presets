@@ -2,10 +2,13 @@ import globals from "globals";
 import pluginJs from "@eslint/js";
 import checkFile from "eslint-plugin-check-file";
 import tseslint from "typescript-eslint";
-import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import prettier from "stylelint-prettier";
 import unusedImports from "eslint-plugin-unused-imports";
+import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
+import jsxa11y from "eslint-plugin-jsx-a11y";
 
-const rules = {
+const ts_rules = {
   camelcase: ["error", { properties: "never" }],
   "new-cap": ["error", { newIsCap: true, capIsNew: false }],
   //"class-methods-use-this": "error",
@@ -31,18 +34,29 @@ const rules = {
   ],
 };
 
-const plugins = {
+const tsxRules = {};
+
+const tsPlugins = {
   "check-file": checkFile,
   "unused-imports": unusedImports,
+  "prettier": prettier,
 };
+
+const tsxPlugins = {
+  "jsx-a11y": jsxa11y,
+  "react": react,
+  "react-hooks": reactHooks,
+};
+
+const tsFiles = ["**/*.{js,mjs,cjs,ts}"];
+const tsxFiles = ["**/*.{jsx,tsx}"];
 
 const ignores = ["src/tests"];
 
 export default [
-  eslintPluginPrettierRecommended,
-  { files: ["**/*.{js,mjs,cjs,ts}"] },
+  { files: [...tsFiles, ...tsxFiles] },
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-  { rules, ignores, plugins },
+  { rules: { ...ts_rules, ...tsxRules }, ignores, plugins: { ...tsPlugins, ...tsxPlugins } },
 ];
